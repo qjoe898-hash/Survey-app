@@ -486,7 +486,7 @@ input[type=radio]:focus-visible{outline:3px solid rgba(103,58,183,.35);outline-o
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // معالجة إرسال النموذج إلى Google Sheets
+        // معالجة إرسال النموذج إلى Google Sheets بدون تعليق الجوال
         document.getElementById('surveyForm').addEventListener('submit', function(e) {
             e.preventDefault();
 
@@ -505,30 +505,21 @@ input[type=radio]:focus-visible{outline:3px solid rgba(103,58,183,.35);outline-o
                 responseData.sector = document.getElementById('sector_other').value;
             }
 
-            // رابط تطبيق جوجل Apps Script الجديد والمحدث
             const scriptURL = 'https://script.google.com/macros/s/AKfycbzHDKdjYw9-Y9xF1PsM4fLV76Dw3f_Aq9iBX_wXjwrxBq-ZwxKkF3zMXKBwoB62CzlS/exec';
             
-
             fetch(scriptURL, {
                 method: 'POST',
                 mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                 body: JSON.stringify(responseData)
             })
-            .then(() => {
+            .finally(() => {
                 document.getElementById('surveyForm').classList.add('d-none');
                 document.getElementById('progressBar').classList.add('d-none');
                 document.getElementById('successMsg').classList.remove('d-none');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
-            })
-            .catch(error => {
-                console.error('Error!', error);
-                alert('حدث خطأ أثناء الإرسال، يرجى المحاولة مرة أخرى.');
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'إرسال الإجابات النهائية';
             });
         });
-
     </script>
 </body>
 </html>
